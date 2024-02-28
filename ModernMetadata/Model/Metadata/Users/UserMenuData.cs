@@ -8,6 +8,10 @@ namespace ModernMetadata.Model.Metadata.Users
 {
     public class UserMenuData : IUserMenuData
     {
-        public IReadOnlyDictionary<string, ItemStatus> ItemsConfig => throw new NotImplementedException();
+        public UserMenuData(Dictionary<string,ItemStatus> itemsConfig) 
+        {
+            ItemsConfig = itemsConfig;
+        }
+        public IReadOnlyDictionary<string, ItemStatus> ItemsConfig {  get; }
     }
 }
