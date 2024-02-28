@@ -1,0 +1,148 @@
+﻿<Window
+    x:Class="ModernMetadata.View.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ModernMetadata.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Вход"
+    Width="340"
+    Height="285"
+    MinWidth="340"
+    MinHeight="285"
+    mc:Ignorable="d">
+    <DockPanel LastChildFill="True">
+        <DockPanel Background="#f0f0f0" DockPanel.Dock="Bottom">
+            <Image
+                Width="15"
+                Height="18"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                Source="../Images/vector.jpg" />
+            <Grid DockPanel.Dock="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="0,2,0,0"
+                    Padding="0,0,4,0"
+                    Background="#b9d1ea"
+                    Text="Клавиша CapsLock нажата"
+                    TextAlignment="Right" />
+                <TextBlock
+                    Margin="0,2,0,0"
+                    Padding="4,0,0,0"
+                    Background="#b9d1ea"
+                    Text="Язык ввода Modern" />
+            </Grid>
+        </DockPanel>
+        <DockPanel Background="#b9d1ea" DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Image
+                    Grid.RowSpan="3"
+                    Grid.ColumnSpan="2"
+                    Height="42"
+                    Margin="5,2,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="1"
+                    DockPanel.Dock="Left"
+                    Source="../Images/keys.jpg" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="2"
+                    Background="#fffacd"
+                    DockPanel.Dock="Top"
+                    TextAlignment="Right">
+                    АИС Отдел кадров
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="2"
+                    Background="#ffd700"
+                    DockPanel.Dock="Top"
+                    TextAlignment="Right">
+                    Версия Modern
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="2"
+                    Background="white"
+                    DockPanel.Dock="Top"
+                    TextAlignment="Right">
+                    Введите имя пользователя и пароль
+                </TextBlock>
+            </Grid>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label>Имя пользователя</Label>
+                    <TextBox Grid.Column="1" Margin="0,0,5,0" />
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label>Пароль</Label>
+                    <TextBox Grid.Column="1" Margin="0,0,5,0" />
+                </Grid>
+
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Margin="15,0,0,0"
+                        Padding="15,0,15,0"
+                        HorizontalAlignment="Left"
+                        Click="OnLoginClicked">
+                        Войти
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        Margin="0,0,15,0"
+                        Padding="15,0,15,0"
+                        HorizontalAlignment="Right">
+                        Отмена
+                    </Button>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
+</Window>
