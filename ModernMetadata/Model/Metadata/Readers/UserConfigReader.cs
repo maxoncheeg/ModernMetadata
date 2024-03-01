@@ -1,57 +1,42 @@
 ﻿using ModernMetadata.Model.Metadata.Users;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModernMetadata.Model.Metadata.Readers
 {
     public class UserConfigReader : IUserConfigReader
     {
         private string _fileName;
-        public UserConfigReader(string fileName) 
+        public UserConfigReader(string fileName)
         {
             _fileName = fileName;
         }
 
         public IUserMenuData? ReadUserMenuData(string name, string password)
         {
+            if (!File.Exists(_fileName)) throw new FileNotFoundException(_fileName);
+
+            using StreamReader streamReader = new(_fileName);
             Dictionary<string, ItemStatus> itemsConfig = new();
-            if (File.Exists(_fileName))
-            {
-                using StreamReader streamReader = new(_fileName);
+            string? line = "";
 
-                string? line = "";
-
-                while ((line = streamReader.ReadLine()) != null)
+            while ((line = streamReader.ReadLine()) != null)
+                if (line[0] == '#')
                 {
-                    if (line[0] == '#')
-                    {
-                        line = line.Substring(1);
-                        string[] words = line.Split(' ');
+                    line = line.Substring(1);
+                    string[] words = line.Split(' ');
 
-                        if (words[0] == name)
+                    if (words[0] == name && words[1] == password)
+                    {
+                        while ((line = streamReader.ReadLine()) != null && line[0] != '#')
                         {
-                            if (words[1] == password)
-                            {
-                                while ((line = streamReader.ReadLine()) != null && line[0] != '#')
-                                {
-                                    string[] configs = line.Split(' ');
-                                    itemsConfig.Add(configs[0], (ItemStatus)int.Parse(configs[1]));
-                                }
-                                return new UserMenuData(itemsConfig);
-                            }
-                            else return null;
+                            string[] configs = line.Split(' ');
+                            itemsConfig.Add(configs[0], (ItemStatus)int.Parse(configs[1]));
                         }
-                        else return null;
+                        return new UserMenuData(itemsConfig);
                     }
-                    else return null;
                 }
-                return null;
-            }
-            else return null;
+
+            return null;
         }
     }
 }
