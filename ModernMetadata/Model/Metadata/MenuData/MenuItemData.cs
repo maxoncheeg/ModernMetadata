@@ -39,5 +39,12 @@ namespace ModernMetadata.Model.Metadata.MenuData
             _method = null;
             _innerMenues = null;
         }
+
+        public void AddInnerMenu(IMenuItemData item)
+        {
+            if(_innerMenues == null)
+                _innerMenues = new List<IMenuItemData>();
+            _innerMenues.Add(item);
+        }
     }
 }

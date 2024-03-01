@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ModernMetadata.Model.Metadata;
+using ModernMetadata.Model.Metadata.Readers;
+using ModernMetadata.Model.Metadata.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +29,8 @@ namespace ModernMetadata.View
 
         private void OnLoginClicked(object sender, RoutedEventArgs e)
         {
-
+            MenuView view = new MenuView();
+            view.ShowDialog();
         }
     }
 }
