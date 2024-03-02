@@ -23,16 +23,13 @@ namespace ModernMetadata.View
     /// </summary>
     public partial class MenuView : Window
     {
-        public MenuView()
+        public MenuView(IUserMenuData data)
         {
             InitializeComponent();
 
-            IUserMenuData data = new UserMenuData();
             IMenuMethodFactory factory = new MenuMethodFactory();
             IMenuConfigReader reader = new MenuConfigReader(factory);
             var res = reader.ReadMenuData(data);
-
-
 
             foreach ( var item in res.Menues)
             {

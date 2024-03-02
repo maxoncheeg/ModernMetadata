@@ -4,50 +4,55 @@ using System.IO;
 
 namespace ModernMetadata.Model.Metadata.Readers
 {
-    public class MenuConfigReader : IMenuConfigReader, IDisposable
+    public class MenuConfigReader : IMenuConfigReader
     {
         private string _fileName;
         private IMenuMethodFactory _factory;
-        private StreamReader _reader;
 
         public MenuConfigReader(IMenuMethodFactory factory, string fileName = "menuConfig.txt")
         {
+            if (!File.Exists(fileName)) throw new FileNotFoundException(fileName);
+
             _fileName = fileName;
             _factory = factory;
-
-
-            if(!File.Exists(fileName))
-                File.Create(fileName);
-
-            _reader = new StreamReader(fileName);
         }
 
         public IMenuData ReadMenuData(IUserMenuData userMenuData)
         {
             string? line;
+            using StreamReader reader = new(_fileName);
 
-            List<IMenuItemData> temp = new();
-            List<IMenuItemData> menu = new();
+            List<IMenuItemData> temp = [];
+            List<IMenuItemData> menu = [];
+            int lastNotVisibleId = -1;
 
-            while ((line = _reader.ReadLine()) != null)
+            while ((line = reader.ReadLine()) != null)
             {
                 string[] strings = line.Split(' ');
+
                 if (strings.Length < 0)
                     throw new IOException("cannot find information");
-
                 if (!int.TryParse(strings[0], out var id))
                     throw new IOException("cannot find information");
 
                 string name = strings[1];
-                bool isStatusExist = userMenuData.ItemsConfig.TryGetValue(name, out var status);
-                if (isStatusExist && status == ItemStatus.NotVisible) continue;
-
                 int zeroIndex = 2;
+
                 for (int i = 2; strings[i][0] != '0'; ++i, zeroIndex = i)
                 {
                     name += " ";
                     name += strings[i];
                 }
+
+                bool isStatusExist = userMenuData.ItemsConfig.TryGetValue(name, out var status);
+
+                if (isStatusExist && status == ItemStatus.NotVisible)
+                {
+                    lastNotVisibleId = id;
+                    continue;
+                }
+                if (lastNotVisibleId != -1 && lastNotVisibleId < id) continue;
+                else lastNotVisibleId = -1;
 
                 if (strings.Length == zeroIndex + 1)
                 {
@@ -76,9 +81,7 @@ namespace ModernMetadata.Model.Metadata.Readers
                         menu.Add(new MenuItemData(name, method));
                     }
                     else
-                    {
                         temp[id - 1].AddInnerMenu(new MenuItemData(name, method));
-                    }
                 }
             }
 
@@ -86,13 +89,6 @@ namespace ModernMetadata.Model.Metadata.Readers
                 menu.Add(temp[0]);
 
             return new MenuData.MenuData(menu);
-        }
-
-
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }
