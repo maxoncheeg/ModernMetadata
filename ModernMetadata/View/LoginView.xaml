@@ -78,6 +78,7 @@
                     Margin="2"
                     Background="#ffd700"
                     DockPanel.Dock="Top"
+                    x:Name="textBlockVersion"
                     TextAlignment="Right">
                     Версия Modern
                 </TextBlock>

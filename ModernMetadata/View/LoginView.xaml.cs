@@ -1,5 +1,6 @@
 ﻿using ModernMetadata.Model.Metadata.Readers;
 using ModernMetadata.Model.Metadata.Users;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,6 +20,8 @@ namespace ModernMetadata.View
             InitializeComponent();
 
             _userConfigReader = new UserConfigReader();
+
+            textBlockVersion.Text = $"Версия {Assembly.GetExecutingAssembly().GetName().Version}";
 
             InputLanguageManager.Current.InputLanguageChanged += OnInputLanguageChanged;
             this.KeyDown += OnKeyDown;
