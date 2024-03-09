@@ -10,7 +10,7 @@ namespace ModernMetadata.Model.Metadata.MenuData
     {
         public string Name { get; }
         public RoutedEventHandler? Method { get; }
-        public IReadOnlyCollection<IMenuItemData>? InnerMenues { get; }
+        public IReadOnlyCollection<IMenuItemData>? InnerMenus { get; }
 
         /// <summary>
         /// Добавление компонентов подменю.

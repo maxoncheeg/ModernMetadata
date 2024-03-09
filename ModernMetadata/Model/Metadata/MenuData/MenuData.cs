@@ -2,11 +2,11 @@
 {
     public class MenuData : IMenuData
     {
-        public MenuData(List<IMenuItemData> menues)
+        public MenuData(List<IMenuItemData> menus)
         {
-            Menues = menues;
+            Menus = menus;
         }
 
-        public IReadOnlyCollection<IMenuItemData> Menues { get; }
+        public IReadOnlyCollection<IMenuItemData> Menus { get; }
     }
 }

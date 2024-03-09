@@ -17,7 +17,7 @@
   <ItemGroup>
     <Resource Include="Images\keys.jpg" />
     <Content Include="Images\icon.ico" />
-    <Content Include="Images\vector.jpg" />
+    <Resource Include="Images\vector.jpg" />
   </ItemGroup>
 
 </Project>

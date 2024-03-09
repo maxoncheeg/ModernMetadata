@@ -31,9 +31,9 @@ namespace ModernMetadata.View
             IMenuConfigReader reader = new MenuConfigReader(factory);
             var res = reader.ReadMenuData(data);
 
-            foreach ( var item in res.Menues)
+            foreach ( var item in res.Menus)
             {
-                if (item.InnerMenues == null || item.InnerMenues.Count == 0) 
+                if (item.InnerMenus == null || item.InnerMenus.Count == 0) 
                 {
                     var newMenu = new MenuItem() { Header = item.Name };
                     if(item.Method != null)
@@ -42,7 +42,7 @@ namespace ModernMetadata.View
                     menu.Items.Add(newMenu);
                 }
                 else
-                    menu.Items.Add(GetMenues(item.Name, item.InnerMenues));
+                    menu.Items.Add(GetMenues(item.Name, item.InnerMenus));
             }
         }
 
@@ -55,7 +55,7 @@ namespace ModernMetadata.View
             MenuItem item = new() { Header = name };
             foreach (IMenuItemData menu in data)
             {
-                if (menu.InnerMenues == null || menu.InnerMenues.Count == 0)
+                if (menu.InnerMenus == null || menu.InnerMenus.Count == 0)
                 {
                     var newMenu = new MenuItem() { Header = menu.Name };
                     if (menu.Method != null)
@@ -64,7 +64,7 @@ namespace ModernMetadata.View
                     item.Items.Add(newMenu);
                 }
                 else
-                    item.Items.Add(GetMenues(menu.Name, menu.InnerMenues));
+                    item.Items.Add(GetMenues(menu.Name, menu.InnerMenus));
             }
             return item;
         }

@@ -67,5 +67,15 @@ namespace ModernMetadata.View
             else 
                 MessageBox.Show("Нет пользователя с заданным именем, либо неправильно введен пароль!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
+
+        /// <summary>
+        /// Нажатие на кнопку Отмена.
+        /// </summary>
+
+        private void OnCancelClick(object sender, RoutedEventArgs e)
+        {
+            textBoxLogin.Text = string.Empty;
+            passwordBox.Password = string.Empty;
+        }
     }
 }

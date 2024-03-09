@@ -6,9 +6,9 @@
     xmlns:local="clr-namespace:ModernMetadata.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Вход"
-    Width="340"
+    Width="360"
     Height="285"
-    MinWidth="340"
+    MinWidth="360"
     MinHeight="285"
     mc:Ignorable="d">
     <DockPanel LastChildFill="True">
@@ -73,12 +73,12 @@
                     АИС Отдел кадров
                 </TextBlock>
                 <TextBlock
+                    x:Name="textBlockVersion"
                     Grid.Row="1"
                     Grid.Column="1"
                     Margin="2"
                     Background="#ffd700"
                     DockPanel.Dock="Top"
-                    x:Name="textBlockVersion"
                     TextAlignment="Right">
                     Версия Modern
                 </TextBlock>
@@ -147,7 +147,8 @@
                         Grid.Column="1"
                         Margin="0,0,15,0"
                         Padding="15,0,15,0"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Click="OnCancelClick">
                         Отмена
                     </Button>
                 </Grid>

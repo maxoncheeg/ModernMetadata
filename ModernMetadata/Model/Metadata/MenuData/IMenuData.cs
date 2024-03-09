@@ -10,6 +10,6 @@
         /// 
         /// </summary>
         
-        public IReadOnlyCollection<IMenuItemData> Menues { get; }
+        public IReadOnlyCollection<IMenuItemData> Menus { get; }
     }
 }

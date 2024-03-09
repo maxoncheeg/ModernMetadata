@@ -13,12 +13,18 @@ namespace ModernMetadata.Model.Metadata.Readers
             _fileName = fileName;
         }
 
+
+        /// <summary>
+        /// Чтение данных конфигурации меню для конкретного пользователя.
+        /// </summary>
+        
         public IUserMenuData? ReadUserMenuData(string name, string password)
         {
             using StreamReader streamReader = new(_fileName);
             Dictionary<string, ItemStatus> itemsConfig = [];
             string? line;
 
+            // Ищем пользователи по #, сравниваем пароль и логин и загружаем конфигурацию.
             while ((line = streamReader.ReadLine()) != null)
                 if (line[0] == '#')
                 {
