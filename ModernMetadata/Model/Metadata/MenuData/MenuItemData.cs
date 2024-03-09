@@ -42,7 +42,7 @@ namespace ModernMetadata.Model.Metadata.MenuData
 
         public void AddInnerMenu(IMenuItemData item)
         {
-            if(_innerMenues == null)
+            if (_innerMenues == null)
                 _innerMenues = new List<IMenuItemData>();
             _innerMenues.Add(item);
         }

@@ -28,20 +28,20 @@ namespace ModernMetadata.Model.Metadata.Readers
 
             while ((line = reader.ReadLine()) != null)
             {
-                string[] strings = line.Split(' ');
+                string[] words = line.Split(' ');
 
-                if (strings.Length < 0)
+                if (words.Length < 0)
                     throw new IOException("cannot find information");
-                if (!int.TryParse(strings[0], out var id))
+                if (!int.TryParse(words[0], out var id))
                     throw new IOException("cannot find information");
 
-                string name = strings[1];
+                string name = words[1];
                 int zeroIndex = 2;
 
-                for (int i = 2; strings[i][0] != '0'; ++i, zeroIndex = i)
+                for (int i = 2; words[i][0] != '0'; ++i, zeroIndex = i)
                 {
                     name += " ";
-                    name += strings[i];
+                    name += words[i];
                 }
 
                 bool isStatusExist = userMenuData.ItemsConfig.TryGetValue(name, out var status);
@@ -51,10 +51,11 @@ namespace ModernMetadata.Model.Metadata.Readers
                     lastNotVisibleId = id;
                     continue;
                 }
+
                 if (lastNotVisibleId != -1 && lastNotVisibleId < id) continue;
                 else lastNotVisibleId = -1;
 
-                if (strings.Length == zeroIndex + 1)
+                if (words.Length == zeroIndex + 1)
                 {
                     if (id != 0)
                     {
@@ -69,7 +70,7 @@ namespace ModernMetadata.Model.Metadata.Readers
                 }
                 else
                 {
-                    string methodName = strings[zeroIndex + 1];
+                    string methodName = words[zeroIndex + 1];
                     var method = isStatusExist && status == ItemStatus.NotEnabledVisible ? null : _factory.GetMenuMethod(methodName);
 
                     if (temp.Count == 0)

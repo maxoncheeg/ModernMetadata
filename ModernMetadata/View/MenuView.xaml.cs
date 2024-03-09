@@ -33,7 +33,8 @@ namespace ModernMetadata.View
 
             foreach ( var item in res.Menues)
             {
-                if (item.InnerMenues == null || item.InnerMenues.Count == 0) {
+                if (item.InnerMenues == null || item.InnerMenues.Count == 0) 
+                {
                     var newMenu = new MenuItem() { Header = item.Name };
                     if(item.Method != null)
                         newMenu.Click += item.Method;
@@ -44,6 +45,10 @@ namespace ModernMetadata.View
                     menu.Items.Add(GetMenues(item.Name, item.InnerMenues));
             }
         }
+
+        /// <summary>
+        /// Создание компонентов меню.
+        /// </summary>
 
         private MenuItem GetMenues(string name, IReadOnlyCollection<IMenuItemData> data)
         {

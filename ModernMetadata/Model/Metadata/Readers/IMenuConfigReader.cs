@@ -10,6 +10,10 @@ namespace ModernMetadata.Model.Metadata.Readers
 {
     public interface IMenuConfigReader
     {
+        /// <summary>
+        /// Чтение данных о меню из файла меню.
+        /// </summary>
+         
         public IMenuData ReadMenuData(IUserMenuData userMenuData);
     }
 }

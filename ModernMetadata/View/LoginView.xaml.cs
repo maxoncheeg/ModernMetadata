@@ -30,16 +30,28 @@ namespace ModernMetadata.View
             textBlockCapslock.Text = "Клавиша Capslock " + (Keyboard.IsKeyToggled(Key.CapsLock) ? "" : "не") + " нажата";
         }
 
+        /// <summary>
+        /// Проверка на нажатие клавиши Capslock.
+        /// </summary>
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.CapsLock)
                 textBlockCapslock.Text = "Клавиша Capslock " + (Keyboard.IsKeyToggled(Key.CapsLock) ? "" : "не") + " нажата";
         }
 
+        /// <summary>
+        /// Определение раскладки.
+        /// </summary>
+
         private void OnInputLanguageChanged(object sender, InputLanguageEventArgs? e)
         {
             textBlockLanguage.Text = "Язык ввода " + (InputLanguageManager.Current.CurrentInputLanguage.Name != "ru-RU" ? "Английский" : "Русский");
         }
+
+        /// <summary>
+        /// Проверка введённых данных.
+        /// </summary>
 
         private void OnLoginClicked(object sender, RoutedEventArgs e)
         {
