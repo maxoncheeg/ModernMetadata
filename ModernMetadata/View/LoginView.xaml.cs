@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using ModernMetadata.Library.Model.Metadata.Readers;
-using ModernMetadata.Library.Model.Metadata.Users;
 
 namespace ModernMetadata.View
 {
@@ -13,13 +11,16 @@ namespace ModernMetadata.View
 
     public partial class LoginView : Window
     {
-        private IUserConfigReader _userConfigReader;
+        private object _userConfigReader;
 
         public LoginView()
         {
             InitializeComponent();
+            
+            Assembly assembly = Assembly.LoadFrom(@"C:\Users\maksg\Desktop\CODING\methodsandtech\ModernMetadata\ModernMetadata.Library\bin\Debug\net8.0\ModernMetadata.Library.dll");
+            Type type = assembly.GetTypes().First(type => type.Name == "UserConfigReader");
 
-            _userConfigReader = new UserConfigReader();
+            _userConfigReader = Activator.CreateInstance(type, ["userConfig.txt"]) ?? throw new DllNotFoundException();
 
             textBlockVersion.Text = $"Версия {Assembly.GetExecutingAssembly().GetName().Version}";
 
@@ -58,7 +59,7 @@ namespace ModernMetadata.View
             if (string.IsNullOrEmpty(textBoxLogin.Text) || string.IsNullOrEmpty(passwordBox.Password))
                 MessageBox.Show("Введите все данные!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-            IUserMenuData? data = _userConfigReader.ReadUserMenuData(textBoxLogin.Text, passwordBox.Password);
+            object? data = _userConfigReader.GetType().GetMethod("ReadUserMenuData")?.Invoke(_userConfigReader, [textBoxLogin.Text, passwordBox.Password]);
             if (data != null)
             {
                 MenuView view = new(data);

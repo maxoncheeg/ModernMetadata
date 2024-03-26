@@ -1,8 +1,8 @@
-﻿
-using ModernMetadata.Model.Metadata;
+﻿using ModernMetadata.Model.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,9 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ModernMetadata.Library.Model.Metadata.MenuData;
-using ModernMetadata.Library.Model.Metadata.Readers;
-using ModernMetadata.Library.Model.Metadata.Users;
 
 namespace ModernMetadata.View
 {
@@ -25,50 +22,68 @@ namespace ModernMetadata.View
     public partial class MenuView : Window
     {
         private IMenuMethodFactory _factory;
-        public MenuView(IUserMenuData data)
+
+        public MenuView(object data)
         {
             InitializeComponent();
 
             _factory = new MenuMethodFactory();
-            IMenuConfigReader reader = new MenuConfigReader();
-            var res = reader.ReadMenuData(data);
+            Assembly assembly =
+                Assembly.LoadFrom(
+                    @"C:\Users\maksg\Desktop\CODING\methodsandtech\ModernMetadata\ModernMetadata.Library\bin\Debug\net8.0\ModernMetadata.Library.dll");
+            Type type = assembly.GetTypes().First(type => type.Name == "MenuConfigReader");
 
-            foreach ( var item in res.Menus)
+            object reader = Activator.CreateInstance(type, ["menuConfig.txt"]) ?? throw new DllNotFoundException();
+            
+            object? res = type.GetMethod("ReadMenuData")?.Invoke(reader, [data]);
+
+            if (res == null) return;
+            foreach (var item in (res.GetType().GetProperty("Menus")?.GetValue(res) as IReadOnlyCollection<object>)!)
             {
-                if (item.InnerMenus == null || item.InnerMenus.Count == 0) 
+                if ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>) == null
+                    || ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>)!)
+                    .Count == 0)
                 {
-                    var newMenu = new MenuItem() { Header = item.Name };
-                    if(item.Method != null)
-                        newMenu.Click += _factory.GetMenuMethod(item.Method);
- 
+                    var newMenu = new MenuItem()
+                        { Header = (item.GetType().GetProperty("Name")?.GetValue(item)?.ToString()) };
+                    if (item.GetType().GetProperty("Method")?.GetValue(item) != null)
+                        newMenu.Click +=
+                            _factory.GetMenuMethod(item.GetType().GetProperty("Method")?.GetValue(item)?.ToString());
+
                     menu.Items.Add(newMenu);
                 }
                 else
-                    menu.Items.Add(GetMenues(item.Name, item.InnerMenus));
+                    menu.Items.Add(GetMenues(item.GetType().GetProperty("Name")?.GetValue(item)?.ToString(),
+                        (item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>)));
             }
         }
 
         /// <summary>
         /// Создание компонентов меню.
         /// </summary>
-
-        private MenuItem GetMenues(string name, IReadOnlyCollection<IMenuItemData> data)
+        private MenuItem GetMenues(string? name, IReadOnlyCollection<object>? data)
         {
-            MenuItem item = new() { Header = name };
-            foreach (IMenuItemData menu in data)
+            MenuItem menu = new() { Header = name };
+            foreach (var item in data)
             {
-                if (menu.InnerMenus == null || menu.InnerMenus.Count == 0)
+                if ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as List<object>) == null
+                    || ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as List<object>)!).Count == 0)
                 {
-                    var newMenu = new MenuItem() { Header = menu.Name };
-                    if (menu.Method != null)
-                        newMenu.Click += _factory.GetMenuMethod(menu.Method);
+                    var newMenu = new MenuItem()
+                        { Header = (item.GetType().GetProperty("Name")?.GetValue(item)?.ToString()) };
+                    if (item.GetType().GetProperty("Method")?.GetValue(item) != null)
+                        newMenu.Click +=
+                            _factory.GetMenuMethod(item.GetType().GetProperty("Method")?.GetValue(item)?.ToString());
 
-                    item.Items.Add(newMenu);
+                    menu.Items.Add(newMenu);
                 }
                 else
-                    item.Items.Add(GetMenues(menu.Name, menu.InnerMenus));
+                    menu.Items.Add(GetMenues(item.GetType().GetProperty("Name")?.GetValue(item)?.ToString(),
+                        (item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>)));
             }
-            return item;
+
+            return menu;
+            
         }
     }
 }

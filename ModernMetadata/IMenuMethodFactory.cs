@@ -7,6 +7,6 @@ namespace ModernMetadata.Model.Metadata
     /// </summary>
     public interface IMenuMethodFactory
     {
-        public RoutedEventHandler GetMenuMethod(string name);
+        public RoutedEventHandler GetMenuMethod(string? name);
     }
 }
