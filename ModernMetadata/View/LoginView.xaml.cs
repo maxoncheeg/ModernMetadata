@@ -1,8 +1,8 @@
-﻿using ModernMetadata.Model.Metadata.Readers;
-using ModernMetadata.Model.Metadata.Users;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using ModernMetadata.Library.Model.Metadata.Readers;
+using ModernMetadata.Library.Model.Metadata.Users;
 
 namespace ModernMetadata.View
 {

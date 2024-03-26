@@ -1,5 +1,4 @@
-﻿using ModernMetadata.Model.Metadata.Readers;
-using ModernMetadata.Model.Metadata.Users;
+﻿
 using ModernMetadata.Model.Metadata;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ModernMetadata.Model.Metadata.MenuData;
+using ModernMetadata.Library.Model.Metadata.MenuData;
+using ModernMetadata.Library.Model.Metadata.Readers;
+using ModernMetadata.Library.Model.Metadata.Users;
 
 namespace ModernMetadata.View
 {
@@ -23,12 +24,13 @@ namespace ModernMetadata.View
     /// </summary>
     public partial class MenuView : Window
     {
+        private IMenuMethodFactory _factory;
         public MenuView(IUserMenuData data)
         {
             InitializeComponent();
 
-            IMenuMethodFactory factory = new MenuMethodFactory();
-            IMenuConfigReader reader = new MenuConfigReader(factory);
+            _factory = new MenuMethodFactory();
+            IMenuConfigReader reader = new MenuConfigReader();
             var res = reader.ReadMenuData(data);
 
             foreach ( var item in res.Menus)
@@ -37,7 +39,7 @@ namespace ModernMetadata.View
                 {
                     var newMenu = new MenuItem() { Header = item.Name };
                     if(item.Method != null)
-                        newMenu.Click += item.Method;
+                        newMenu.Click += _factory.GetMenuMethod(item.Method);
  
                     menu.Items.Add(newMenu);
                 }
@@ -59,7 +61,7 @@ namespace ModernMetadata.View
                 {
                     var newMenu = new MenuItem() { Header = menu.Name };
                     if (menu.Method != null)
-                        newMenu.Click += menu.Method;
+                        newMenu.Click += _factory.GetMenuMethod(menu.Method);
 
                     item.Items.Add(newMenu);
                 }

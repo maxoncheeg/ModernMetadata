@@ -20,4 +20,8 @@
     <Resource Include="Images\vector.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ModernMetadata.Library\ModernMetadata.Library.csproj" />
+  </ItemGroup>
+
 </Project>
