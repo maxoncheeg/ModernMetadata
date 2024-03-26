@@ -63,11 +63,11 @@ namespace ModernMetadata.View
         /// </summary>
         private MenuItem GetMenues(string? name, IReadOnlyCollection<object>? data)
         {
-            MenuItem menu = new() { Header = name };
+            MenuItem menu1 = new() { Header = name };
             foreach (var item in data)
             {
-                if ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as List<object>) == null
-                    || ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as List<object>)!).Count == 0)
+                if ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>) == null
+                    || ((item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>)!).Count == 0)
                 {
                     var newMenu = new MenuItem()
                         { Header = (item.GetType().GetProperty("Name")?.GetValue(item)?.ToString()) };
@@ -75,15 +75,14 @@ namespace ModernMetadata.View
                         newMenu.Click +=
                             _factory.GetMenuMethod(item.GetType().GetProperty("Method")?.GetValue(item)?.ToString());
 
-                    menu.Items.Add(newMenu);
+                    menu1.Items.Add(newMenu);
                 }
                 else
-                    menu.Items.Add(GetMenues(item.GetType().GetProperty("Name")?.GetValue(item)?.ToString(),
+                    menu1.Items.Add(GetMenues(item.GetType().GetProperty("Name")?.GetValue(item)?.ToString(),
                         (item.GetType().GetProperty("InnerMenus")?.GetValue(item) as IReadOnlyCollection<object>)));
             }
 
-            return menu;
-            
+            return menu1;
         }
     }
 }
